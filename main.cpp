@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
 #include "writer.h"
 using namespace std;
+=======
+#include <cstdio>
+
+>>>>>>> d23371fc4bd4fe76a0ac6b7e9bbbe1e83f4afd8d
 int main(int argc, char **argv)
 {
 	/*Writer * w = Writer::getInstance();
