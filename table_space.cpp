@@ -4,44 +4,47 @@ TableSpace::TableSpace()
 {
 	this->ID = 0;
 	this->nombre = "";
-	this->tamano = 0l
+	this->tamano = 0l;
 }
 
 TableSpace::~TableSpace()
 {
 }
-TableSpace::TableSpace(id _id, string nombre):ID(_id), nombre(_nombre){
+TableSpace::TableSpace(id _id, string _nombre):ID(_id), nombre(_nombre){
 		this->tamano = 0;
 }
 void TableSpace::addTable(Table * t){
 	this->tablas.push_back(t);
 }
-void TableSpace::removeTable(id){
+void TableSpace::removeTable(id _id){
 	typedef list<Table*>::iterator iter;
 	for(iter i = this->tablas.begin(); i != tablas.end() ; i++){
-		if( id == (*i)->id){
-			tablas.erase(i)
+		if( _id == (*i)->GetID()){
+			tablas.erase(i);
 			return;
 		}
+	}
 }
-void TableSpace::removeTable(Table *){
+void TableSpace::removeTable(Table * tb){
 			typedef list<Table*>::iterator iter;
 	for(iter i = this->tablas.begin(); i != tablas.end() ; i++){
-		if(id == (*i)){
-			tablas.erase(i)
+		if(tb == (*i)){
+			tablas.erase(i);
 			return;
 		}
+	}
 }
 void TableSpace::serializate_this(ofstream& os){
 	
 	typedef list<Table*>::iterator iter;	
-	SerializadorBinario::serialize(os,this->ID);
+	SerializadorBinario::serialize(os,(long)this->ID);
 	SerializadorBinario::serialize(os,this->nombre);
-	SerializadorBinario::serialize(os,this->tamano);
-	SerializadorBinario::serialize(os,(long)this->tablas->size());
+	SerializadorBinario::serialize(os,(long)this->tamano);
+	SerializadorBinario::serialize(os,(long)this->tablas.size());
 		
 	for(iter i = this->tablas.begin(); i != tablas.end() ; i++){
 		(*i)->serializate_this(os);
+	}
 }
 TableSpace* TableSpace::deserialize_a_TableSpace(ifstream& is){
 		TableSpace * t = new TableSpace();
@@ -50,7 +53,7 @@ TableSpace* TableSpace::deserialize_a_TableSpace(ifstream& is){
 		t->SetTamano(SerializadorBinario::deserializeLong(is));
 		long x = SerializadorBinario::deserializeInt(is);
 		for(long h = 0; h < x ; h++){
-			this->addTable(Table::deserialize_a_table(is));
+			t->addTable(Table::deserialize_a_table(is));
 		}
 		return t;
 }

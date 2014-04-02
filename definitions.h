@@ -1,3 +1,10 @@
+#ifndef DEFS_H
+#define DEFS_H
+#include <iostream>
+#include <fstream>
+#include <sstream>
+using namespace std;
+
 #define EXIT_SUCCESS 1
 #define NO_OPEN_FILE 2
 #define UNSPECIFIED_ID 3
@@ -12,13 +19,15 @@ enum Tipo_Dato {
 };
 int sizeDT(Tipo_Dato t){
 		switch(t){
-			case Tipo_Dato::BYTE:
+			case BYTE:
 				return sizeof(char);
-			case Tipo_Dato::DOUBLE:
+			case DOUBLE:
 				return sizeof(float);
-			case Tipo_Dato::INTEGER:
+			case INTEGER:
 				return sizeof(int);
-			case Tipo_Dato::STRING;
+			case STRING:
 				return sizeof(char[128]);
 		}
+		return 0;
 }
+#endif

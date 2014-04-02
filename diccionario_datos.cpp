@@ -40,8 +40,8 @@ void DiccionarioDatos::serialize(){
 	ofs.open ("dic.dbf", ios::out | ios::binary);
 	if (ofs.is_open()){
 			SerializadorBinario::serialize(ofs,s);
-			for(it = this->tablaSpaces.begin(); it != tablaSpaces.end(); it++)
-				(*it)->serializate_this(ofs);
+			for(it ite = tablaSpaces.begin(); ite != tablaSpaces.end(); ite++)
+				(*ite)->serializate_this(ofs);
 	}
 
 }

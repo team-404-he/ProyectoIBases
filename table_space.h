@@ -28,7 +28,7 @@ public:
 	id ID;
 	string nombre;
 	size tamano;
-	std::list<Tabla*> tablas;
+	std::list<Table*> tablas;
 
 	~TableSpace();
 

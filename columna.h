@@ -13,7 +13,7 @@ private:
 	size direcionEnArchivo;
 public:
 	
-	Columna(string _nom, size _tam, Tipo_Dato _tipo, size antecesors);
+	Columna(string _nom, Tipo_Dato _tipo, size antecesor);
 	const id GetID() const;
 	void SetID(id _ID);
 	void SetTamano(const size& tamano);
@@ -23,7 +23,7 @@ public:
 	const size& GetDireccionArchivo();
 	void SetDireccionArchivo(const size& Tam);
 	void SetNombre(const string& nombre);
-	const string& GetNombre();
+	const string& GetNombre() const;
 	void serialize_this(ofstream &);
 	static Columna* deserialize_a_Column(ifstream& is);
 	Columna();

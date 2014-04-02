@@ -5,7 +5,7 @@ Columna::Columna()
 {
 		this->ID = 0l;
 		this->nombre = "";
-		this->tipo = Columna::Tipo_Dato::BYTE;
+		this->tipo = BYTE;
 		this->tamano = 0l;
 		this->direcionEnArchivo = 0l;
 }
@@ -23,7 +23,7 @@ const id Columna::GetID() const{
 		return this->ID;
 }
 void Columna::SetID(id _ID){
-	this->ID = _id;
+	this->ID = _ID;
 }
 void Columna::SetTamano(const size& tamano){
 	 this->tamano = tamano;
@@ -52,11 +52,11 @@ const string& Columna::GetNombre() const {
 
 void Columna::serialize_this(ofstream & os)
 {
-	SerializadorBinario::serialize(os,this->ID);
+	SerializadorBinario::serialize(os,(long)this->ID);
 	SerializadorBinario::serialize(os,this->nombre);
 	SerializadorBinario::serialize(os, static_cast<int>(this->tipo));
-	SerializadorBinario::serialize(os,this->tamano);
-	SerializadorBinario::serialize(os,this->direcionEnArchivo);
+	SerializadorBinario::serialize(os,(long)this->tamano);
+	SerializadorBinario::serialize(os,(long)this->direcionEnArchivo);
 }
 Columna* deserialize_a_Column(ifstream& is){
 	Columna * c = new Columna;
