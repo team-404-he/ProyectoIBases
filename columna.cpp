@@ -14,7 +14,7 @@ Columna::~Columna()
 
 Columna::Columna(string _nom, Tipo_Dato _tipo, size antecesor){
 		this->nombre = _nom;
-		this->tamano = _tam;
+		this->tamano = sizeDT(_tipo);
 		this->tipo = _tipo;
 		this->direcionEnArchivo = antecesor;
 		
@@ -61,7 +61,7 @@ void Columna::serialize_this(ofstream & os)
 Columna* deserialize_a_Column(ifstream& is){
 	Columna * c = new Columna;
 	c->SetID(SerializadorBinario::deserializeLong(is));
-	c->SetNombre(SerializadorBinario::deserializeLong(is));
+	c->SetNombre(SerializadorBinario::deserializeString(is));
 	c->SetTipo(static_cast<Tipo_Dato>(SerializadorBinario::deserializeInt(is)));
 	c->SetTamano(SerializadorBinario::deserializeLong(is));
 	c->SetDireccionArchivo(SerializadorBinario::deserializeLong(is));

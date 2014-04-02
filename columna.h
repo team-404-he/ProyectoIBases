@@ -1,7 +1,7 @@
 #ifndef COLUMNA_H
 #define COLUMNA_H
 #include "SerializadorBinario.h"
-
+#include "definitions.h"
 class Columna
 {
 private:
