@@ -1,15 +1,23 @@
 #include "columna.h"
 
+
 Columna::Columna()
-{}
+{
+		this->ID = 0l;
+		this->nombre = "";
+		this->tipo = Columna::Tipo_Dato::BYTE;
+		this->tamano = 0l;
+		this->direcionEnArchivo = 0l;
+}
 Columna::~Columna()
 {}
 
-Columna::Columna(string _nom, size _tam, Tipo_Dato _tipo, size antecesor){
+Columna::Columna(string _nom, Tipo_Dato _tipo, size antecesor){
 		this->nombre = _nom;
 		this->tamano = _tam;
 		this->tipo = _tipo;
 		this->direcionEnArchivo = antecesor;
+		
 }
 const id Columna::GetID() const{
 		return this->ID;
@@ -42,15 +50,21 @@ const string& Columna::GetNombre() const {
 	return nombre;
 }
 
-std::ostream& operator<<(std::ostream& os, const Columna& obj)
+void Columna::serialize_this(ofstream & os)
 {
-	os<<obj.GetID()<<obj.GetNombre()<<obj.GetTipo()<<obj.GetTamano()<<obj.GetDireccionArchivo();
-  return os;
+	SerializadorBinario::serialize(os,this->ID);
+	SerializadorBinario::serialize(os,this->nombre);
+	SerializadorBinario::serialize(os, static_cast<int>(this->tipo));
+	SerializadorBinario::serialize(os,this->tamano);
+	SerializadorBinario::serialize(os,this->direcionEnArchivo);
 }
-std::istream& operator>>(std::istream& is, T& obj)
-{
-  // read obj from stream
-  if( /* no valid object of T found in stream */ )
-    is.setstate(std::ios::failbit);
-  return is;
+Columna* deserialize_a_Column(ifstream& is){
+	Columna * c = new Columna;
+	c->SetID(SerializadorBinario::deserializeLong(is));
+	c->SetNombre(SerializadorBinario::deserializeLong(is));
+	c->SetTipo(static_cast<Tipo_Dato>(SerializadorBinario::deserializeInt(is)));
+	c->SetTamano(SerializadorBinario::deserializeLong(is));
+	c->SetDireccionArchivo(SerializadorBinario::deserializeLong(is));
+	return c;
 }
+
