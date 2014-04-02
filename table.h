@@ -20,6 +20,9 @@ public:
 	void SetDireccionArchivo(const size& Tam);
 	const string& GetNombre();
 	void SetNombre(const string& nombre);
+	void serialize_this(ofstream& os);
+	static Table* deserialize_a_Table(ifstream& is);
+	void addTable(Columna & colum);
 };
 
 #endif // Table
