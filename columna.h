@@ -1,5 +1,6 @@
 #ifndef COLUMNA_H
 #define COLUMNA_H
+#include "SerializadorBinario.h"
 
 class Columna
 {
@@ -11,7 +12,7 @@ private:
 	//Tentativamente
 	size direcionEnArchivo;
 public:
-	static enum Tipo_Dato {INTEGER, DOUBLE, STRING, BYTE};
+	
 	Columna(string _nom, size _tam, Tipo_Dato _tipo, size antecesors);
 	const id GetID() const;
 	void SetID(id _ID);
@@ -23,7 +24,8 @@ public:
 	void SetDireccionArchivo(const size& Tam);
 	void SetNombre(const string& nombre);
 	const string& GetNombre();
-	
+	void serialize_this(ofstream &);
+	static Columna* deserialize_a_Column(ifstream& is);
 	Columna();
 	~Columna();
 
