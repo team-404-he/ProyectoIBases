@@ -49,7 +49,6 @@ TableSpace* TableSpace::deserialize_a_TableSpace(ifstream& is){
 		t->SetNombre(SerializadorBinario::deserializeString(is));
 		t->SetTamano(SerializadorBinario::deserializeLong(is));
 		long x = SerializadorBinario::deserializeInt(is);
-		iter i = this->tablas.begin();
 		for(long h = 0; h < x ; h++){
 			this->addTable(Table::deserialize_a_table(is));
 		}
