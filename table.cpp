@@ -7,7 +7,7 @@ Table::Table()
 Table::~Table()
 {
 }
-const Table::id GetID() const{
+const id Table::GetID() const{
 		return this->ID;
 } 
 void Table::SetID(id _ID){
@@ -22,8 +22,8 @@ void Table::SetTamano(const size& tamano){
 const size& Table:: GetDireccionArchivo(){
 	return this->direcionEnArchivo;
 }
-void Table::SetDireccionArchivo(const size& Tam){
-	this->direcionEnArchivo;=tam;
+void Table::SetDireccionArchivo(const size& tam){
+	this->direcionEnArchivo=tam;
 }
 const string& Table::GetNombre(){
 	return this->nombre;
@@ -32,36 +32,37 @@ void Table:: SetNombre(const string& nombre){
 	this->nombre=nombre;
 }
 
-list Table::GetColumnas(){
-	return this->columnas;
-}
+//list Table::GetColumnas(){
+	//return this->columnas;
+//}
 
 void Table::serialize_this(ofstream & os){
 	{
-	SerializadorBinario::serialize(os,this->ID);
+	SerializadorBinario::serialize(os,(long)this->ID);
 	SerializadorBinario::serialize(os,this->nombre);
 	this->tamano=columnas.size();
-	SerializadorBinario::serialize(os,this->tamano);
-	SerializadorBinario::serialize(os,this->direcionEnArchivo);
-	
+	SerializadorBinario::serialize(os,(long)this->tamano);
+	SerializadorBinario::serialize(os,(long)this->direcionEnArchivo);
+	SerializadorBinario::serialize(os,(long)this->columnas.size());
 	for(list<Columna*>::iterator it=this->columnas.begin();it!=this->columnas.end();it++){
 		(*it)->serialize_this(os);
 	}
 }
 	
 	}
-static Table* Table:: deserialize_a_Table(ifstream& is){
+Table* Table::deserialize_a_Table(ifstream& is){
 	Table *table=new Table();
 	table->SetID(SerializadorBinario::deserializeLong(is));
 	table->SetNombre(SerializadorBinario::deserializeString(is));
 	table->SetTamano(SerializadorBinario::deserializeLong(is));
 	table->SetDireccionArchivo(SerializadorBinario::deserializeLong(is));
-	for(int i=0;i<tamano;i++){
+	long x = SerializadorBinario::deserializeLong(is);
+	for(int i=0;i<x;i++){
 		Columna* columna=Columna::deserialize_a_Column(is);
-		this->addTable(columna);
+		table->addColumn(columna);
 	}
-	
+	return table;
 }
-void Table::addTable(Columna & colum){
+void Table::addColumn(Columna * colum){
 	this->columnas.push_back(colum);
 }

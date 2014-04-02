@@ -43,7 +43,7 @@ void TableSpace::serializate_this(ofstream& os){
 	SerializadorBinario::serialize(os,(long)this->tablas.size());
 		
 	for(iter i = this->tablas.begin(); i != tablas.end() ; i++){
-		(*i)->serializate_this(os);
+		(*i)->serialize_this(os);
 	}
 }
 TableSpace* TableSpace::deserialize_a_TableSpace(ifstream& is){
@@ -53,7 +53,7 @@ TableSpace* TableSpace::deserialize_a_TableSpace(ifstream& is){
 		t->SetTamano(SerializadorBinario::deserializeLong(is));
 		long x = SerializadorBinario::deserializeInt(is);
 		for(long h = 0; h < x ; h++){
-			t->addTable(Table::deserialize_a_table(is));
+			t->addTable(Table::deserialize_a_Table(is));
 		}
 		return t;
 }

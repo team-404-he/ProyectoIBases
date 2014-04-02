@@ -28,6 +28,20 @@ public:
 	static Columna* deserialize_a_Column(ifstream& is);
 	Columna();
 	~Columna();
+	
+	int sizeDT(Tipo_Dato t){
+		switch(t){
+			case BYTE:
+				return sizeof(char);
+			case DOUBLE:
+				return sizeof(float);
+			case INTEGER:
+				return sizeof(int);
+			case STRING:
+				return sizeof(char[128]);
+	}
+	return 0;
+}
 
 };
 

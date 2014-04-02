@@ -58,7 +58,7 @@ void Columna::serialize_this(ofstream & os)
 	SerializadorBinario::serialize(os,(long)this->tamano);
 	SerializadorBinario::serialize(os,(long)this->direcionEnArchivo);
 }
-Columna* deserialize_a_Column(ifstream& is){
+Columna* Columna::deserialize_a_Column(ifstream& is){
 	Columna * c = new Columna;
 	c->SetID(SerializadorBinario::deserializeLong(is));
 	c->SetNombre(SerializadorBinario::deserializeString(is));

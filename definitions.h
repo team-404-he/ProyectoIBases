@@ -17,17 +17,5 @@ enum Tipo_Dato {
 	STRING,
 	BYTE
 };
-int sizeDT(Tipo_Dato t){
-		switch(t){
-			case BYTE:
-				return sizeof(char);
-			case DOUBLE:
-				return sizeof(float);
-			case INTEGER:
-				return sizeof(int);
-			case STRING:
-				return sizeof(char[128]);
-		}
-		return 0;
-}
+
 #endif

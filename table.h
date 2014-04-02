@@ -1,5 +1,8 @@
-#ifndef Table
-#define Table
+#ifndef Table_H
+#define Table_H
+#include "definitions.h"
+#include <iostream>
+#include "columna.h"
 #include <list>
 using namespace std; 
 class Table{
@@ -22,7 +25,7 @@ public:
 	void SetNombre(const string& nombre);
 	void serialize_this(ofstream& os);
 	static Table* deserialize_a_Table(ifstream& is);
-	void addTable(Columna & colum);
+	void addColumn(Columna * colum);
 };
 
 #endif // Table
