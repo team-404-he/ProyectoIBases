@@ -45,7 +45,7 @@ void Table::serialize_this(ofstream & os){
 	SerializadorBinario::serialize(os,this->direcionEnArchivo);
 	
 	for(list<Columna*>::iterator it=this->columnas.begin();it!=this->columnas.end();it++){
-		*it->serialize_this(os);
+		(*it)->serialize_this(os);
 	}
 }
 	
