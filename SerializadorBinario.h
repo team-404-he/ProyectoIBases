@@ -1,10 +1,11 @@
 /*
-	Autor: Steven Brenes Chavarría
+	Autor: Steven Brenes ChavarrÃ­a
 	Email: sbrenesms@gmail.com
 	Universidad Nacional de Costa Rica
 	Licencia: GNU
 */
-
+#ifndef SEBI_H
+#define SEBI_H
 #pragma once
 #include <string>
 #include <fstream>
@@ -32,3 +33,4 @@ protected:
 	SerializadorBinario();
 };
 
+#endif
