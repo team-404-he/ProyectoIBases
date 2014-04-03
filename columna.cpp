@@ -17,7 +17,7 @@ Columna::Columna(string _nom, Tipo_Dato _tipo, size antecesor){
 		this->tamano = sizeDT(_tipo);
 		this->tipo = _tipo;
 		this->direcionEnArchivo = antecesor;
-		
+		this->ID = 0l;
 }
 const id Columna::GetID() const{
 		return this->ID;
@@ -68,3 +68,8 @@ Columna* Columna::deserialize_a_Column(ifstream& is){
 	return c;
 }
 
+string Columna::toString(){
+		stringstream ss;
+		ss<<"Columna: "<<this->nombre<<" ID "<<this->ID;
+		return ss.str();
+}

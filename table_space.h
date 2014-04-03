@@ -17,6 +17,8 @@ public:
 	void removeTable(id);
 	void removeTable(Table *);
 	void serializate_this(ofstream&);
+	string toString();
+	
 	static TableSpace* deserialize_a_TableSpace(ifstream&);
 	
 	void SetID(const id& ID);

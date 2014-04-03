@@ -2,6 +2,8 @@
 #define COLUMNA_H
 #include "SerializadorBinario.h"
 #include "definitions.h"
+#include <sstream>
+
 class Columna
 {
 private:
@@ -26,6 +28,7 @@ public:
 	const string& GetNombre() const;
 	void serialize_this(ofstream &);
 	static Columna* deserialize_a_Column(ifstream& is);
+	string toString();
 	Columna();
 	~Columna();
 	

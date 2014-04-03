@@ -2,6 +2,7 @@
 #define Table_H
 #include "definitions.h"
 #include <iostream>
+#include <sstream>
 #include "columna.h"
 #include <list>
 using namespace std; 
@@ -14,6 +15,7 @@ private:
 	string nombre;
 public:
 	Table();
+	Table(id,string,size,size);
 	~Table();
 	const id GetID() const;
 	void SetID(id _ID);
@@ -26,6 +28,7 @@ public:
 	void serialize_this(ofstream& os);
 	static Table* deserialize_a_Table(ifstream& is);
 	void addColumn(Columna * colum);
+	string toString();
 };
 
 #endif // Table

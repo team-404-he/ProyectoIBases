@@ -18,6 +18,9 @@ DiccionarioDatos* DiccionarioDatos::Instance()
 	}
 	return ms_instance;
 }
+std::list<TableSpace*>& DiccionarioDatos::getList(){
+		return this->tablaSpaces;
+}
 
 void DiccionarioDatos::addTableSpace(TableSpace * ts){
 		this->tablaSpaces.push_back(ts);
@@ -43,7 +46,8 @@ void DiccionarioDatos::serialize(){
 			for(it ite = tablaSpaces.begin(); ite != tablaSpaces.end(); ite++)
 				(*ite)->serializate_this(ofs);
 	}
-
+	ofs.flush();
+	ofs.close();
 }
 
 void DiccionarioDatos::Release()

@@ -71,3 +71,12 @@ const string& TableSpace::GetNombre() const
 const size& TableSpace::GetTamano() const {
 	return this->tamano;
 }
+
+string TableSpace::toString(){
+	typedef list<Table*>::iterator it;
+	stringstream ss;
+	ss<<" TableSpace: "<<this->nombre<<" ID "<<this->ID<<endl;
+	for(it i = this->tablas.begin(); i != tablas.end(); i++)
+		ss<<(*i)->toString()<<endl;
+	return ss.str();
+}

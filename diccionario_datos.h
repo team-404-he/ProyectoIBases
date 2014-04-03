@@ -16,6 +16,7 @@ public:
 	void serialize();
 	void addTableSpace(TableSpace *);
 	static DiccionarioDatos* Instance();
+	std::list<TableSpace*>& getList();
 	static void Release();
 
 private:
