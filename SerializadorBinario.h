@@ -6,7 +6,7 @@
 */
 #ifndef SEBI_H
 #define SEBI_H
-#pragma once
+
 #include <string>
 #include <fstream>
 using namespace std;

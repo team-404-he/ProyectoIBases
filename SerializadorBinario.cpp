@@ -1,5 +1,5 @@
 /*
-	Autor: Steven Brenes Chavarría
+	Autor: Steven Brenes ChavarrÃ­a
 	Email: sbrenesms@gmail.com
 	Universidad Nacional de Costa Rica
 	Licencia: GNU
@@ -74,10 +74,10 @@ char SerializadorBinario::deserializeChar(ifstream &in) {
 }
 
 bool SerializadorBinario::serialize(ofstream &out, const string &s) {
-	bool r = true;
+	//bool r = true;
 
 	// Primero, guarda la longitud de la hilera,
-	// tomando en cuenta el caracter nulo de terminación.
+	// tomando en cuenta el caracter nulo de terminaciÃ³n.
 
 	size_t n = s.length() + 1;
 	out.write((char*)&n, sizeof(size_t));
