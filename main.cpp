@@ -24,7 +24,7 @@ int main(int argc, char ** argv){
 	cin>>C_name;
 	cout<<endl;
 	
-	TableSpace * TB = new TableSpace(dic->getList().size(),TB_name);
+	TableSpace * TB = new TableSpace(dic->getList().size(),TB_name, "tb0.dbf");
 	Table * tabla = new Table(dic->getList().size(),T_name,0,0);
 	TB->addTable(tabla);
 	Columna * col = new Columna(C_name,BYTE,0);
