@@ -10,7 +10,7 @@ TableSpace::TableSpace()
 TableSpace::~TableSpace()
 {
 }
-TableSpace::TableSpace(id _id, string _nombre):ID(_id), nombre(_nombre){
+TableSpace::TableSpace(id _id, string _nombre, std::string _path):ID(_id), nombre(_nombre), path(_path){
 		this->tamano = 0;
 }
 void TableSpace::addTable(Table * t){
@@ -38,6 +38,7 @@ void TableSpace::serializate_this(ofstream& os){
 	
 	typedef list<Table*>::iterator iter;	
 	SerializadorBinario::serialize(os,(long)this->ID);
+	SerializadorBinario::serialize(os,this->path);
 	SerializadorBinario::serialize(os,this->nombre);
 	SerializadorBinario::serialize(os,(long)this->tamano);
 	SerializadorBinario::serialize(os,(long)this->tablas.size());
@@ -49,6 +50,7 @@ void TableSpace::serializate_this(ofstream& os){
 TableSpace* TableSpace::deserialize_a_TableSpace(ifstream& is){
 		TableSpace * t = new TableSpace();
 		t->SetID(SerializadorBinario::deserializeLong(is));
+		t->SetPath(SerializadorBinario::deserializeString(is));
 		t->SetNombre(SerializadorBinario::deserializeString(is));
 		t->SetTamano(SerializadorBinario::deserializeLong(is));
 		long x = SerializadorBinario::deserializeInt(is);
@@ -71,6 +73,12 @@ const string& TableSpace::GetNombre() const
 const size& TableSpace::GetTamano() const {
 	return this->tamano;
 }
+void TableSpace::SetPath(std::string _path){
+		this->path = _path;
+}
+const std::string& TableSpace::GetPath() const{
+	return this->path;
+}
 
 string TableSpace::toString(){
 	typedef list<Table*>::iterator it;
@@ -79,4 +87,26 @@ string TableSpace::toString(){
 	for(it i = this->tablas.begin(); i != tablas.end(); i++)
 		ss<<(*i)->toString()<<endl;
 	return ss.str();
+}
+Table* TableSpace::findByName(std::string& name){
+	typedef list<Table*>::iterator it;
+	Table* ret = NULL;
+	for(it i = this->tablas.begin(); i != tablas.end(); i++){
+			if((*i)->GetNombre() == name){
+					ret = (*i);
+					i = tablas.end();
+			} 
+	}
+	return ret;	
+}
+Table* TableSpace::findByID(size _id){
+	typedef list<Table*>::iterator it;
+	Table* ret = NULL;
+	for(it i = this->tablas.begin(); i != tablas.end(); i++){
+			if((*i)->GetID() == _id){
+					ret = (*i);
+					i = tablas.end();
+			} 
+	}
+	return ret;	
 }
