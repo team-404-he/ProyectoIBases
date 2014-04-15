@@ -17,7 +17,12 @@ public:
 		ofstream outFile;
 		outFile.open (path, ios::out | ios::app | ios::binary | ios::ate);
 		if(!outFile.is_open()) return NO_OPEN_FILE;
-		
+		myfile.seekp (0, ios::end);
+		SerializadorBinario::serialize(myfile, (long)next);
+		SerializadorBinario::serialize(myfile, (long)tablespace_id);
+		SerializadorBinario::serialize(myfile, (long)table_id);
+		SerializadorBinario::serialize(myfile, (long)columna_id);
+		SerializadorBinario::serialize(myfile, (long)sizeof(data));
 		outFile.close();
 		return EXIT_SUCCESS;
 	}
