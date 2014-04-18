@@ -10,8 +10,9 @@ TableSpace::TableSpace()
 TableSpace::~TableSpace()
 {
 }
-TableSpace::TableSpace(id _id, string _nombre, std::string _path):ID(_id), nombre(_nombre), path(_path){
-		this->tamano = 0;
+TableSpace::TableSpace(id _id, string _nombre, std::string _path): path(_path), tamano(0){
+		this->ID = _id;
+		this->nombre = _nombre;
 }
 void TableSpace::addTable(Table * t){
 	this->tablas.push_back(t);
@@ -66,6 +67,8 @@ void TableSpace::SetNombre(const string& nombre)
  {this->nombre = nombre;}
 void TableSpace::SetTamano(const size& tamano) 
 {this->tamano = tamano;}
+
+
 const id& TableSpace::GetID() const 
 {return ID;}
 const string& TableSpace::GetNombre() const 

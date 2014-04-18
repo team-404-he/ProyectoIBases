@@ -19,10 +19,10 @@ Columna::Columna(string _nom, Tipo_Dato _tipo, size antecesor){
 		this->direcionEnArchivo = antecesor;
 		this->ID = 0l;
 }
-const id Columna::GetID() const{
+const id& Columna::GetID() const{
 		return this->ID;
 }
-void Columna::SetID(id _ID){
+void Columna::SetID(const id& _ID){
 	this->ID = _ID;
 }
 void Columna::SetTamano(const size& tamano){

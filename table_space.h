@@ -4,10 +4,11 @@
 #include "definitions.h"
 #include "table.h"
 #include "SerializadorBinario.h"
+#include "DBElement.h"
 #include <list>
 using namespace std;
 
-class TableSpace
+class TableSpace: public DBElement
 {
 	
 public:
@@ -21,21 +22,21 @@ public:
 	
 	static TableSpace* deserialize_a_TableSpace(ifstream&);
 	
-	void SetID(const id& ID);
-	void SetNombre(const string& nombre);
+	const id& GetID() const;
+	void SetID(const id&);
 	void SetTamano(const size& tamano);
 	void SetPath(std::string _path);
 	const std::string& GetPath() const;
-	const id& GetID() const;
-	const string& GetNombre() const;
+	const std::string& GetNombre() const;
+	void SetNombre(const std::string&);
 	const size& GetTamano() const;
 //-------------------------------------------------
 	Table* findByName(std::string& name);
 	Table* findByID(size _id);
 private:
 	
-	id ID;
-	string nombre;
+	//id ID;
+	//string nombre;
 	string path;
 	size tamano;
 	std::list<Table*> tablas;

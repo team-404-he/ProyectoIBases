@@ -2,13 +2,14 @@
 #define COLUMNA_H
 #include "SerializadorBinario.h"
 #include "definitions.h"
+#include "DBElement.h"
 #include <sstream>
 
-class Columna
+class Columna: public DBElement
 {
 private:
-	id ID;
-	string nombre;
+	//id ID;
+	//string nombre;
 	size tamano;
 	Tipo_Dato tipo;
 	//Tentativamente
@@ -16,8 +17,8 @@ private:
 public:
 	
 	Columna(string _nom, Tipo_Dato _tipo, size antecesor);
-	const id GetID() const;
-	void SetID(id _ID);
+	const id& GetID() const;
+	void SetID(const id& _ID);
 	void SetTamano(const size& tamano);
 	void SetTipo(const Tipo_Dato& tipo);
 	const size& GetTamano() const ;
