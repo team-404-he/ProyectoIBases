@@ -12,6 +12,7 @@ int main(int argc, char ** argv){
 	cout<<"Una Pequena implementacion en el Main, a causa de poco tiempo no pudimos Poner Una interfaz para usarlo"<<endl;
 	cout<<"Digite la info para un registro de TB despues se muestran los Registros subsequentes\n si lo vuelve a ejecutar el registro esta ahi"<<endl;
 	//int x;
+	//dic->addUser(new user(0,0,"Johan","123pass",DBA));
 	std::string TB_name;
 	std::string T_name;
 	std::string C_name;

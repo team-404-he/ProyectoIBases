@@ -18,13 +18,13 @@ Table::~Table()
 {
 	//HUEHEUHEUHEUHEUHEUEHUEHEUHEUHEUEU
 }
-const id Table::GetID() const{
+ const id& Table::GetID() const{
 		return this->ID;
 } 
-void Table::SetID(id _ID){
+void Table::SetID(const id& _ID){
 	this->ID=_ID;
 }	
-const size& Table:: GetTamano() const{
+const size& Table::GetTamano() const{
 	return this->tamano;
 } 
 void Table::SetTamano(const size& tamano){
@@ -36,11 +36,33 @@ const size& Table:: GetDireccionArchivo(){
 void Table::SetDireccionArchivo(const size& tam){
 	this->direcionEnArchivo=tam;
 }
-const string& Table::GetNombre(){
+const string& Table::GetNombre() const{
 	return this->nombre;
 }
-void Table:: SetNombre(const string& nombre){
+void Table::SetNombre(const string& nombre){
 	this->nombre=nombre;
+}
+
+Columna* Table::getByIndex(int i){
+	if(i >= this->columnas.size()) return NULL;
+	list<Columna*>::iterator it;
+	it = this->columnas.begin();
+	for(int ij = 0;ij < i; ij++ , it++ );
+	return (*it);
+}
+Columna* Table::getByName(std::string n){
+	Columna * ret = NULL;
+	list<Columna*>::iterator it ;
+	for(it = this->columnas.begin(); it != this->columnas.end(); it++){
+		if((*it)->GetNombre() == n){
+			ret = (*it);
+			it = columnas.end();
+		}
+	}
+	return ret;
+}
+Columna* Table::operator[](int i){
+	return this->getByIndex(i);
 }
 
 //list Table::GetColumnas(){

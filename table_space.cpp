@@ -53,7 +53,7 @@ TableSpace* TableSpace::deserialize_a_TableSpace(ifstream& is){
 		t->SetPath(SerializadorBinario::deserializeString(is));
 		t->SetNombre(SerializadorBinario::deserializeString(is));
 		t->SetTamano(SerializadorBinario::deserializeLong(is));
-		long x = SerializadorBinario::deserializeInt(is);
+		long x = SerializadorBinario::deserializeLong(is);
 		for(long h = 0; h < x ; h++){
 			t->addTable(Table::deserialize_a_Table(is));
 		}
@@ -83,9 +83,9 @@ const std::string& TableSpace::GetPath() const{
 string TableSpace::toString(){
 	typedef list<Table*>::iterator it;
 	stringstream ss;
-	ss<<" TableSpace: "<<this->nombre<<" ID "<<this->ID<<endl;
+	ss<<"TableSpace: "<<this->nombre<<" ID "<<this->ID<<endl;
 	for(it i = this->tablas.begin(); i != tablas.end(); i++)
-		ss<<(*i)->toString()<<endl;
+		ss<<'\t'<<(*i)->toString()<<endl;
 	return ss.str();
 }
 Table* TableSpace::findByName(std::string& name){

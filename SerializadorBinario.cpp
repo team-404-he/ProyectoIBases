@@ -1,120 +1,128 @@
-/*
-	Autor: Steven Brenes Chavarría
-	Email: sbrenesms@gmail.com
-	Universidad Nacional de Costa Rica
-	Licencia: GNU
-*/
-
 #include "SerializadorBinario.h"
-#include <fstream>
-#include <sstream>
-
-SerializadorBinario::SerializadorBinario() {
+SerializadorBinario::SerializadorBinario()
+{
 }
-
-string SerializadorBinario::deserializeString(ifstream &in) {
+// bloque de lectura de datos primitivos
+string SerializadorBinario::deserializeString(istream& ifs)
+{
 	string r;
 
 	size_t n = 0;
-	in.read((char*)&n, sizeof(size_t));
-	
+	ifs.read((char*)&n, sizeof(size_t));
+
 	char* c = new char[n];
-	in.read(c, (std::streamsize)n);
+	ifs.read(c, (std::streamsize)n);
 	r = string(c);
 	delete c;
-	if(!in.good())
+	if(!ifs.good())
 		throw -1;
 
 	return r;
 }
-
-int SerializadorBinario::deserializeInt(ifstream &in) {
-	string r = deserializeString(in);
-	stringstream s;
-	s << r;
-	int destino;
-	s >> destino;
-	return destino;
+int SerializadorBinario::deserializeInt(istream& ifs)
+{
+	size_t _sz = sizeof(int);
+	char * c = new char[_sz];
+	ifs.read(c, (std::streamsize)_sz);
+	int ret = *((int*)c);
+	delete c;
+	if(!ifs.good()) throw -1;
+	return ret;
+}
+long SerializadorBinario::deserializeLong(istream& ifs)
+{
+	size_t _sz = sizeof(long);
+	char * c = new char[_sz];
+	ifs.read(c, (std::streamsize)_sz);
+	long ret = *((long*)c);
+	delete c;
+	if(!ifs.good()) throw -1;
+	return ret;
+}
+double SerializadorBinario::deserializeDouble(istream& ifs)
+{
+	size_t _sz = sizeof(double);
+	char * c = new char[_sz];
+	ifs.read(c, (std::streamsize)_sz);
+	double ret = *((double*)c);
+	delete c;
+	if(!ifs.good()) throw -1;
+	return ret;
+}
+float SerializadorBinario::deserializeFloat(istream& ifs)
+{
+	size_t _sz = sizeof(float);
+	char * c = new char[_sz];
+	ifs.read(c, (std::streamsize)_sz);
+	float ret = *((float*)c);
+	delete c;
+	if(!ifs.good()) throw -1;
+	return ret;
+}
+char SerializadorBinario::deserializeChar(istream& ifs)
+{
+	size_t _sz = sizeof(char);
+	char * c = new char(0);
+	ifs.read(c, (std::streamsize)_sz);
+	char ret = *(c);
+	delete c;
+	if(!ifs.good()) throw -1;
+	return ret;
 }
 
-long SerializadorBinario::deserializeLong(ifstream &in) {
-	string r = deserializeString(in);
-	stringstream s;
-	s << r;
-	long destino;
-	s >> destino;
-	return destino;
+unsigned long SerializadorBinario::deserializeUlong(istream& ifs)
+{
+	size_t _sz = sizeof(unsigned long);
+	char * c = new char[_sz];
+	ifs.read(c, (std::streamsize)_sz);
+	unsigned long ret = *((unsigned long*)c);
+	delete c;
+	if(!ifs.good()) throw -1;
+	return ret;
 }
-
-double SerializadorBinario::deserializeDouble(ifstream &in) {
-	string r = deserializeString(in);
-	stringstream s;
-	s << r;
-	double destino;
-	s >> destino;
-	return destino;
-}
-
-float SerializadorBinario::deserializeFloat(ifstream &in) {
-	string r = deserializeString(in);
-	stringstream s;
-	s << r;
-	float destino;
-	s >> destino;
-	return destino;
-}
-
-char SerializadorBinario::deserializeChar(ifstream &in) {
-	string r = deserializeString(in);
-	stringstream s;
-	s << r;
-	char destino;
-	s >> destino;
-	return destino;
-}
-
-bool SerializadorBinario::serialize(ofstream &out, const string &s) {
-	//bool r = true;
-
-	// Primero, guarda la longitud de la hilera,
-	// tomando en cuenta el caracter nulo de terminación.
-
-	size_t n = s.length() + 1;
+//
+// bloque de serializacion de datos primitivos
+bool SerializadorBinario::serialize(ostream& out, const string& s)
+{
+	size_t n = s.size() + 1;
 	out.write((char*)&n, sizeof(size_t));
-
-	// Luego graba los caracteres componentes de la
-	// hilera.
-
 	out.write(s.c_str(), (std::streamsize)n);
 	return out.good();
 }
-
-bool SerializadorBinario::serialize(ofstream &out, const int &s) {
-	stringstream r;
-	r << s;
-	return serialize(out, r.str());
+bool SerializadorBinario::serialize(ostream& out, const int& y)
+{
+	int n = y;
+	out.write((char*)&n, sizeof(int));
+	return out.good();
+}
+bool SerializadorBinario::serialize(ostream& out, const long& y)
+{
+	long n = y;
+	out.write((char*)&n, sizeof(long));
+	return out.good();
+}
+bool SerializadorBinario::serialize(ostream& out, const double& y)
+{
+	double n = y;
+	out.write((char*)&n, sizeof(double));
+	return out.good();
+}
+bool SerializadorBinario::serialize(ostream& out, const float& y)
+{
+	float n = y;
+	out.write((char*)&n, sizeof(float));
+	return out.good();
+}
+bool SerializadorBinario::serialize(ostream& out, const char& y)
+{
+	char n = y;
+	out.write((char*)&n, sizeof(char));
+	return out.good();
 }
 
-bool SerializadorBinario::serialize(ofstream &out, const long &s) {
-	stringstream r;
-	r << s;
-	return serialize(out, r.str());
-}
-
-bool SerializadorBinario::serialize(ofstream &out, const double &s) {
-	stringstream r;
-	r << s;
-	return serialize(out, r.str());
-}
-
-bool SerializadorBinario::serialize(ofstream &out, const float &s) {
-	stringstream r;
-	r << s;
-	return serialize(out, r.str());
-}
-
-bool SerializadorBinario::serialize(ofstream &out, const char &s) {
-	stringstream r;
-	r << s;
-	return serialize(out, r.str());
+bool SerializadorBinario::serialize(ostream& out, const unsigned long& y)
+{
+	unsigned long n = y;
+	out.write((char*)&n, sizeof(unsigned long));
+	return out.good();
 }

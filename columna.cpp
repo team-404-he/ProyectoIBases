@@ -70,6 +70,6 @@ Columna* Columna::deserialize_a_Column(ifstream& is){
 
 string Columna::toString(){
 		stringstream ss;
-		ss<<"Columna: "<<this->nombre<<" ID "<<this->ID;
+		ss<<" \t Columna: "<<this->nombre<<" ID "<<this->ID;
 		return ss.str();
 }
