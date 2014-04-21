@@ -9,7 +9,7 @@ using namespace std;
 class Table : public DBElement{
 private:
 	list<Columna*> columnas;
-	//id ID;
+	id rowCount;
 	size tamano;
 	size direcionEnArchivo;
 	//string nombre;
@@ -35,6 +35,9 @@ public:
 	
 	void addColumn(Columna *);
 	string toString();
+	
+//	const id& GetRowCount() const;
+//	void SetRowCount(const id&);
 	
 	Columna* getByIndex(int);
 	Columna* getByName(std::string);

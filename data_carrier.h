@@ -9,7 +9,7 @@ class DataCarrier: public Any
 {
 private:
 	T data;
-	Tipo_Dato td;
+	char null;
 public:
 	T operator->(){
 		return this->data;
@@ -17,12 +17,13 @@ public:
 	T operator*(){
 		return this->data;
 	}
-	DataCarrier(T dat, Tipo_Dato _td = BYTE) : data(dat), td(_td){}
+	DataCarrier(T dat,char isnull, Tipo_Dato _td) : data (dat), null(isnull), Any(_td){}
+	
+	char isNull(){
+		return null;
+	}
 	T getData(){
 		return data;
-	}
-	Tipo_Dato getTipoDato(){
-		return this->td;
 	}
 	~DataCarrier(){}
 

@@ -25,6 +25,7 @@ void Table::SetID(const id& _ID){
 	this->ID=_ID;
 }	
 const size& Table::GetTamano() const{
+	this->tamano = columnas.size();
 	return this->tamano;
 } 
 void Table::SetTamano(const size& tamano){

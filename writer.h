@@ -11,12 +11,12 @@ protected:
 	static Writer * instance;
 public:
 	static Writer * getInstance();
-	int write(char * path,id tablespace_id, id table_id,id columna_id,std::string data);
-	int write(char * path,id tablespace_id, id table_id,id columna_id,long data);
-	int write(char * path,id tablespace_id, id table_id,id columna_id,int data);
-	int write(char * path,id tablespace_id, id table_id,id columna_id,char data);
-	int write(char * path,id tablespace_id, id table_id,id columna_id,float data);
-	int write(char * path,id tablespace_id, id table_id,id columna_id,double data);
+	int write(const char * path,id tablespace_id, id table_id,id columna_id, char null, std::string data);
+	int write(const char * path,id tablespace_id, id table_id,id columna_id, char null, long data);
+	int write(const char * path,id tablespace_id, id table_id,id columna_id, char null, int data);
+	int write(const char * path,id tablespace_id, id table_id,id columna_id, char null, char data);
+	int write(const char * path,id tablespace_id, id table_id,id columna_id, char null, float data);
+	int write(const char * path,id tablespace_id, id table_id,id columna_id, char null, double data);
 private:
 
 };

@@ -103,13 +103,12 @@ Table* TableSpace::findByName(std::string& name){
 	return ret;	
 }
 Table* TableSpace::findByID(size _id){
-	typedef list<Table*>::iterator it;
-	Table* ret = NULL;
-	for(it i = this->tablas.begin(); i != tablas.end(); i++){
-			if((*i)->GetID() == _id){
-					ret = (*i);
-					i = tablas.end();
-			} 
+	list<Table*>::iterator it;
+	//Table* ret = NULL;
+	for(it = this->tablas.begin(); it != tablas.end(); it++){
+			if((*it)->GetID() == _id)
+					return (*it);
+					//it = tablas.end();
 	}
-	return ret;	
+	return NULL;	
 }

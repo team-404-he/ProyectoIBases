@@ -81,11 +81,12 @@ void DiccionarioDatos::Release()
 
 TableSpace * DiccionarioDatos::getTBSByID(id _id){
 	list<TableSpace*>::iterator it;
-	TableSpace * ret = NULL;
+	//TableSpace * ret = NULL;
 	for(it = this->tablaSpaces.begin(); it != tablaSpaces.end();it++){
-		if((*it)->GetID() == _id) ret = *it;
+		if((*it)->GetID() == _id)
+			return (*it);
 	}
-	return ret;
+	return NULL;
 }
 TableSpace * DiccionarioDatos::getTBSByName(std::string _nombre){
 	list<TableSpace*>::iterator it;
