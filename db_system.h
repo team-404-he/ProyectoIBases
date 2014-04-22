@@ -11,6 +11,8 @@
 #include "data_carrier.h"
 #include "writer.h"
 
+#include <fstream>
+
 using namespace std;
 
 class DBSystem

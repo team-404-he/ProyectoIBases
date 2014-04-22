@@ -9,7 +9,7 @@ class dataSet
 private:
 	std::vector< std::vector<Any> > Matriz;
 public:
-	dataSet(int,int);
+	dataSet(int = 0,int = 0);
 	std::vector<Any>& operator[](int);
 	dataSet();
 	~dataSet();

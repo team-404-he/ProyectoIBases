@@ -16,7 +16,7 @@ private:
 	size direcionEnArchivo;
 public:
 	
-	Columna(string _nom, Tipo_Dato _tipo, size antecesor);
+	Columna(id _id, string _nom, Tipo_Dato _tipo, size antecesor);
 	const id& GetID() const;
 	void SetID(const id& _ID);
 	void SetTamano(const size& tamano);
@@ -39,6 +39,8 @@ public:
 				return sizeof(char);
 			case DOUBLE:
 				return sizeof(float);
+			case LONG:
+				return sizeof(long);
 			case INTEGER:
 				return sizeof(int);
 			case STRING:

@@ -12,12 +12,12 @@ Columna::Columna()
 Columna::~Columna()
 {}
 
-Columna::Columna(string _nom, Tipo_Dato _tipo, size antecesor){
-		this->nombre = _nom;
-		this->tamano = sizeDT(_tipo);
-		this->tipo = _tipo;
-		this->direcionEnArchivo = antecesor;
-		this->ID = 0l;
+Columna::Columna(id _id, string _nom, Tipo_Dato _tipo, size antecesor){
+	this->nombre = _nom;
+	this->tamano = sizeDT(_tipo);
+	this->tipo = _tipo;
+	this->direcionEnArchivo = antecesor;
+	this->ID = _id;
 }
 const id& Columna::GetID() const{
 		return this->ID;

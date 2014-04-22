@@ -3,7 +3,7 @@
 Table::Table(id _id,string _nom,size _tam,size _dir){
 	this->ID = _id;
 	this->nombre = _nom;
-	this->tamano = _tam;
+	this->tamano = 0;
 	this->direcionEnArchivo = _dir;
 }
 Table::Table()
@@ -25,7 +25,6 @@ void Table::SetID(const id& _ID){
 	this->ID=_ID;
 }	
 const size& Table::GetTamano() const{
-	this->tamano = columnas.size();
 	return this->tamano;
 } 
 void Table::SetTamano(const size& tamano){
@@ -98,7 +97,10 @@ Table* Table::deserialize_a_Table(ifstream& is){
 	return table;
 }
 void Table::addColumn(Columna * colum){
+	this->SetTamano(columnas.size());
+	colum->SetID(this->tamano);
 	this->columnas.push_back(colum);
+	this->SetTamano(columnas.size());
 }
 
 string Table::toString(){
