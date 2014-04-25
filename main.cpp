@@ -9,6 +9,7 @@
 #include "db_system.h"
 #include <vector>
 #include "any.h"
+#include "data_set.h"
 
 using namespace std;
 int main(int argc, char ** argv){
@@ -24,15 +25,19 @@ int main(int argc, char ** argv){
 	tb->addTable(t2);
 	dic->addTableSpace(tb);*/
 	/*dic->serialize();*/
-	vector<Any*> v (1);
-	vector<int> v1(1);
+	//vector<Any*> v (1,2);
+	vector<int> v1(2);
 	v1[0] = 0;
-	v[0] = new DataCarrier<int>(15,0,INTEGER);
+	v1[1] = 1;
 	TableSpace * tbs = dic->getTBSByID(0);
-	string name = "Tabla2";
-	Table * tb = tbs->findByName(name);
-	DBSystem::INSERT(tbs,tb,v,v1);
+	string name = "Tabla0";
+	Table * tb = tbs->findByID(0);
+//	DBSystem::INSERT(tbs,tb,v,v1);
+	where w;
+	w.aplicar = false;
+	dataSet* dts = DBSystem::SELECT(tbs, tb,v1, w);
 	
+	delete dts;
 	dic->serialize();
 	//cin.get();*/
 }
