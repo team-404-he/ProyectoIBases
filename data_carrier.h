@@ -8,9 +8,9 @@ template<typename T>
 class DataCarrier: public Any
 {
 private:
-	char null;
 	T data;
-	
+	char null;
+		
 public:
 	T operator->(){
 		return this->data;
