@@ -125,7 +125,14 @@ bool Operaciones::createUser() {
 	dic->addUser(u);
 	dic->serialize();
 }
-bool Operaciones::insertInto() {}
+bool Operaciones::insertInto() {
+	vector<Any*> data;
+	map<int,string> relcampos;
+	vector<int> campos;
+	Table * tabla;
+	cout<<"Digite los campos ";
+	
+}
 bool Operaciones::selectFrom() {}
 bool Operaciones::updateFields() {}
 bool Operaciones::deleteField() {}
