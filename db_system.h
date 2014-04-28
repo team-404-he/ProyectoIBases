@@ -33,7 +33,7 @@ public:
 	~DBSystem();
 	static std::string INSERT(TableSpace *, Table* ,const std::vector<Any*>&,const std::vector<int>&);
 	static dataSet* SELECT(TableSpace * , Table*,const std::vector<int>&, where);
-	static string UPDATE(TableSpace *,Table* , vector<Any*>&, vector<int>,where);
+	static string UPDATE(TableSpace *,Table* , vector<Any*>&, vector<int>& ,where&);
 	static bool WHERE(Any*,Any*,char);
 	/*static bool WHERE (vector<Any>, vector<int>, int);
 	static dataSet WHERE (dataSet& , vector<int>, int); */

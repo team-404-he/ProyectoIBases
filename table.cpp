@@ -50,16 +50,13 @@ Columna* Table::getByIndex(int i){
 	for(int ij = 0;ij < i; ij++ , it++ );
 	return (*it);
 }
-Columna* Table::getByName(std::string n){
-	Columna * ret = NULL;
+Columna* Table::getByName(std::string& n){
 	list<Columna*>::iterator it ;
 	for(it = this->columnas.begin(); it != this->columnas.end(); it++){
-		if((*it)->GetNombre() == n){
-			ret = (*it);
-			it = columnas.end();
-		}
+		if((*it)->GetNombre() == n)
+			return (*it);
 	}
-	return ret;
+	return NULL;
 }
 Columna* Table::operator[](int i){
 	return this->getByIndex(i);

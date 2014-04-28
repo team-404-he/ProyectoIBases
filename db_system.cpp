@@ -199,7 +199,7 @@ dataSet* DBSystem::SELECT(TableSpace * tbs, Table* t,const std::vector<int>& fie
 	} else return NULL;
 	return new dataSet(mtx);
 }
-string DBSystem::UPDATE(TableSpace * tbs,Table* t, vector<Any*>& data, vector<int> fields, where w)
+string DBSystem::UPDATE(TableSpace * tbs,Table* t, vector<Any*>& data, vector<int>& fields, where& w)
 {
 	std::fstream ifs;
 	long tbid, tid, colid;

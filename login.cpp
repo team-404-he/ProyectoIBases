@@ -26,7 +26,7 @@ void Login::Release()
 	ms_instance = 0;
 }
 
-bool log(){
+bool Login::log(){
 	bool nousr = true;
 	string usr, pss;
 	user * _user;

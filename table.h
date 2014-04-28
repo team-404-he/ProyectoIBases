@@ -40,7 +40,7 @@ public:
 //	void SetRowCount(const id&);
 	
 	Columna* getByIndex(int);
-	Columna* getByName(std::string);
+	Columna* getByName(std::string&);
 	Columna* operator[](int);
 };
 
