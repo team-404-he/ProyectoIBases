@@ -26,6 +26,11 @@ public:
 	T getData(){
 		return data;
 	}
+	std::string toString(){
+		std::stringstream ss;
+		ss<<this->data;
+		return ss.str();
+	}
 	~DataCarrier(){}
 
 };

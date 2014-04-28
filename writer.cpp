@@ -19,7 +19,7 @@ int Writer::write(const char * path,id tablespace_id, id table_id,id columna_id,
 	SerializadorBinario::serialize(outFile, (long)columna_id);
 	//SerializadorBinario::serialize(outFile, (long)data.size()+1);
 	SerializadorBinario::serialize(outFile, null);
-	SerializadorBinario::serialize(outFile, data);
+	SerializadorBinario::serializeFixed(outFile, data);
 	outFile.close();
 	return EXIT_SUCCESS;
 }

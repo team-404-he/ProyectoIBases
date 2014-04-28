@@ -15,6 +15,15 @@
 #define NO_OPEN_FILE 2
 #define UNSPECIFIED_ID 3
 
+#define MENOR 0
+#define MAYOR 1
+#define IGUAL 2
+#define DIFERENTE 3
+
+#define CAMPO 0 //DEFINE EL WHERE PARA TRABAJAR ENTRE CAMPOS
+#define VALOR 1 //DEFINE EL WHERE PARA TRABAJAR ENTRE CAMPO - VALOR
+
+#define StringSize 128
 typedef unsigned long size;
 typedef unsigned long id;
 typedef std::vector< std::vector<int>   > MatrixInt;

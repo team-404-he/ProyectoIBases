@@ -19,6 +19,18 @@ string SerializadorBinario::deserializeString(istream& ifs)
 
 	return r;
 }
+string SerializadorBinario::deserializeFixedString(istream& ifs){
+	string r;
+	size_t n = 0;
+	ifs.read((char*)&n, sizeof(size_t));
+	char* c = new char[StringSize];
+	ifs.read(c, (std::streamsize)StringSize);
+	r = string(c,n);
+	delete c;
+	if(!ifs.good())
+		throw -1;
+	return r;
+}
 int SerializadorBinario::deserializeInt(istream& ifs)
 {
 	size_t _sz = sizeof(int);
@@ -82,6 +94,18 @@ unsigned long SerializadorBinario::deserializeUlong(istream& ifs)
 }
 //
 // bloque de serializacion de datos primitivos
+bool SerializadorBinario::serializeFixed(ostream& out, const string& s){
+	size_t n = s.size() + 1;
+	char * c = new char[StringSize];
+	out.write((char*)&n, sizeof(size_t));
+	for(unsigned int i = 0; i < 128; i++){
+		if(i < s.size()+1) c[i] = s[i];
+		else c[i] = 0;
+	}
+	out.write(c, (std::streamsize)StringSize);
+	delete c;
+	return out.good();
+}
 bool SerializadorBinario::serialize(ostream& out, const string& s)
 {
 	size_t n = s.size() + 1;

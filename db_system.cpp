@@ -1,4 +1,5 @@
 #include "db_system.h"
+#include "table.h"
 void push(std::list< std::vector<Any*> >& mat, const std::vector<int>& fields, int sz, const  std::vector<Any*>& data)
 {
 	int j = 0;
@@ -10,6 +11,59 @@ void push(std::list< std::vector<Any*> >& mat, const std::vector<int>& fields, i
 	mat.push_back(vec);
 	//unsigned long _s = mat.size();
 }
+
+void delReg(id tam, std::fstream & strm, std::streampos initial_pos ){
+	long nxt, ldel = -1;
+	long pos = initial_pos;
+	strm.seekg(pos);
+	for(int i = 0; i < tam; i++){	
+		strm.seekg(pos);
+		nxt = SerializadorBinario::deserializeLong((istream&)strm);
+		strm.seekp(pos + 16);
+		SerializadorBinario::serialize((ostream&)strm,ldel);
+		pos += (nxt + 8);
+	}
+}
+void modReg(Table * t , std::fstream & strm, const std::vector<Any*>& data , const std::vector<int>& fields, std::streampos initial_pos){
+	long nxt, ldel = -1;
+	long pos = initial_pos, gpos, ppos;
+	unsigned int j = 0; 
+	strm.seekg(pos);
+	for(unsigned int i = 0; i < t->GetTamano(); i++){
+		gpos = strm.tellg(); ppos = strm.tellp();
+		strm.seekg(pos);
+		nxt = SerializadorBinario::deserializeLong((istream&)strm);
+		strm.seekp(pos + 33);
+		gpos = strm.tellg(); ppos = strm.tellp();
+		char c; int inte; long lon; double d; std::string s;
+		if(i == fields[j]){
+			switch((*t)[i]->GetTipo()){
+				case BYTE:
+					c = ((DataCarrier<char>*)data[j])->getData();
+					SerializadorBinario::serialize((ostream&)strm,c);
+				break;
+				case INTEGER:
+					inte = ((DataCarrier<int>*)data[j])->getData();
+					SerializadorBinario::serialize((ostream&)strm,inte);
+				break;
+				case LONG:
+					lon = ((DataCarrier<long>*)data[j])->getData();
+					SerializadorBinario::serialize((ostream&)strm,lon);	
+				break;
+				case DOUBLE:
+					d = ((DataCarrier<double>*)data[j])->getData();
+					SerializadorBinario::serialize((ostream&)strm,d);
+				break;
+				case STRING:
+					s = ((DataCarrier<std::string>*)data[j])->getData();
+					SerializadorBinario::serializeFixed((ostream&)strm,s);
+				break;
+			}
+			j++;
+		}	
+		pos += (nxt + 8);
+	}
+}
 DBSystem::DBSystem()
 {
 }
@@ -17,7 +71,7 @@ DBSystem::~DBSystem()
 {
 }
 std::string DBSystem::INSERT(TableSpace * tbs, Table* tb,const std::vector<Any*>& data,const std::vector<int>& fields)
-{
+{	
 	unsigned int j = 0;
 	int  integer;
 	long l;
@@ -89,7 +143,7 @@ dataSet* DBSystem::SELECT(TableSpace * tbs, Table* t,const std::vector<int>& fie
 	long nxt;
 	ifs.open(tbs->GetPath().c_str());
 	if(ifs.is_open()) {
-		
+
 		streampos end;
 		ifs.seekg (0, ios::end);
 		end = ifs.tellg();
@@ -106,7 +160,7 @@ dataSet* DBSystem::SELECT(TableSpace * tbs, Table* t,const std::vector<int>& fie
 				for(unsigned long i = 0; i < t->GetTamano(); i++) {
 					char isNull = SerializadorBinario::deserializeChar(ifs);
 					switch((*t)[i]->GetTipo()) {
-					case BYTE: 
+					case BYTE:
 						v[i] = new DataCarrier<char>(SerializadorBinario::deserializeChar(ifs),isNull,BYTE);
 						break;
 					case INTEGER:
@@ -119,23 +173,22 @@ dataSet* DBSystem::SELECT(TableSpace * tbs, Table* t,const std::vector<int>& fie
 						v[i] = new DataCarrier<double>(SerializadorBinario::deserializeDouble(ifs),isNull,DOUBLE);
 						break;
 					case STRING:
-						v[i] = new DataCarrier<std::string>(SerializadorBinario::deserializeString(ifs),isNull,STRING);
+						v[i] = new DataCarrier<std::string>(SerializadorBinario::deserializeFixedString(ifs),isNull,STRING);
 						break;
 					}
-					if( (i + 1) < t->GetTamano()){
+					if( (i + 1) < t->GetTamano()) {
 						nxt = SerializadorBinario::deserializeLong(ifs);
 						tbid = SerializadorBinario::deserializeLong(ifs);
 						tid = SerializadorBinario::deserializeLong(ifs);
 						colid = SerializadorBinario::deserializeLong(ifs);
-						}
+					}
 				}
 				if(w.aplicar) {
 					Any* a = v[w.field_a];
 					if(w.tipo == 0) {
 						Any* b = v[w.field_b];
 						if(WHERE(a, b, w.operation)) push(mtx,fields,t->GetTamano(),v);
-					}
-					else{ 
+					} else {
 						Any* b = w.val_a;
 						if(WHERE(a,b,w.operation)) push(mtx,fields,t->GetTamano(),v);
 					}
@@ -146,11 +199,186 @@ dataSet* DBSystem::SELECT(TableSpace * tbs, Table* t,const std::vector<int>& fie
 	} else return NULL;
 	return new dataSet(mtx);
 }
-string DBSystem::UPDATE(TableSpace * tbs,Table* T, vector<Any>& data, vector<int> fields, where w) { return " ";}
-bool DBSystem::WHERE(Any* f1,Any* f2, char op){
-		return true;
-}
-/*bool DBSystem::WHERE (vector<Any> data, vector<int> fields, int operation) { return true;}
-dataSet DBSystem::WHERE (dataSet& dts, vector<int> fields, int operation) { return dataSet();}*/
-string DBSystem::DELETE() { return string();}
+string DBSystem::UPDATE(TableSpace * tbs,Table* t, vector<Any*>& data, vector<int> fields, where w)
+{
+	std::fstream ifs;
+	long tbid, tid, colid;
+	long nxt;
+	ifs.open(tbs->GetPath().c_str());
+	if(ifs.is_open()) {
+		streampos end, begReg, lstReg;
+		ifs.seekg (0, ios::end);
+		end = ifs.tellg();
+		ifs.seekg (0);
 
+		while(ifs.tellg() != end) {
+			begReg = ifs.tellg();
+			nxt = SerializadorBinario::deserializeLong(ifs);
+			tbid = SerializadorBinario::deserializeLong(ifs);
+			tid = SerializadorBinario::deserializeLong(ifs);
+			colid = SerializadorBinario::deserializeLong(ifs);
+			if((ifs.tellg()+(nxt-24)) == end && tid != t->GetID()) break;
+			if(tid == t->GetID()) {
+				std::vector<Any*> v(t->GetTamano());
+				for(unsigned long i = 0; i < t->GetTamano(); i++) {
+					char isNull = SerializadorBinario::deserializeChar(ifs);
+					switch((*t)[i]->GetTipo()) {
+					case BYTE:
+						v[i] = new DataCarrier<char>(SerializadorBinario::deserializeChar(ifs),isNull,BYTE);
+						break;
+					case INTEGER:
+						v[i] = new DataCarrier<int>(SerializadorBinario::deserializeInt(ifs),isNull,INTEGER);
+						break;
+					case LONG:
+						v[i] = new DataCarrier<long>(SerializadorBinario::deserializeLong(ifs),isNull,LONG);
+						break;
+					case DOUBLE:
+						v[i] = new DataCarrier<double>(SerializadorBinario::deserializeDouble(ifs),isNull,DOUBLE);
+						break;
+					case STRING:
+						v[i] = new DataCarrier<std::string>(SerializadorBinario::deserializeFixedString(ifs),isNull,STRING);
+						break;
+					}
+					if( (i + 1) < t->GetTamano()) {
+						nxt = SerializadorBinario::deserializeLong(ifs);
+						tbid = SerializadorBinario::deserializeLong(ifs);
+						tid = SerializadorBinario::deserializeLong(ifs);
+						colid = SerializadorBinario::deserializeLong(ifs);
+					}
+				}
+				lstReg = ifs.tellg();
+				if(w.aplicar) {
+					Any* a = v[w.field_a];
+					if(w.tipo == 0) {
+						Any* b = v[w.field_b];
+						if(WHERE(a, b, w.operation)) modReg(t,ifs,data,fields,begReg);
+					} else {
+						Any* b = w.val_a;
+						if(WHERE(a,b,w.operation)) modReg(t,ifs,data,fields,begReg);
+					}
+				} else modReg(t,ifs,data,fields,begReg);
+				ifs.seekg(lstReg);
+
+			} else ifs.seekg((std::streampos)(nxt-24), ios::cur);
+		}
+	} else return "No rows Affected";
+	return "many rows Affected";
+}
+
+bool DBSystem::WHERE(Any* f1,Any* f2, char op)
+{
+	if( f1->td != f2->td ) return false;
+	switch(f1->td) {
+	case BYTE:
+		char a , b;
+		a = ((DataCarrier<char>*)f1)->getData();
+		b = ((DataCarrier<char>*)f2)->getData();
+		if(op == MENOR) return a < b;
+		if(op == MAYOR) return a > b;
+		if(op == IGUAL) return a == b;
+		if(op == DIFERENTE) return a != b;
+		return false;
+	case INTEGER:
+		int c , d;
+		c = ((DataCarrier<int>*)f1)->getData();
+		d = ((DataCarrier<int>*)f2)->getData();
+		if(op == MENOR) return c < d;
+		if(op == MAYOR) return c > d;
+		if(op == IGUAL) return c == d;
+		if(op == DIFERENTE) return c != d;
+		return false;
+	case LONG:
+		long e , f;
+		e = ((DataCarrier<long>*)f1)->getData();
+		f = ((DataCarrier<long>*)f2)->getData();
+		if(op == MENOR) return e < f;
+		if(op == MAYOR) return e > f;
+		if(op == IGUAL) return e == f;
+		if(op == DIFERENTE) return e != f;
+		return false;
+	case DOUBLE:
+		double g , h;
+		g = ((DataCarrier<double>*)f1)->getData();
+		h = ((DataCarrier<double>*)f2)->getData();
+		if(op == MENOR) return g < h;
+		if(op == MAYOR) return g > h;
+		if(op == IGUAL) return g == h;
+		if(op == DIFERENTE) return g != h;
+		return false;
+	case STRING:
+		std::string s1 , s2;
+		s1 = ((DataCarrier<std::string>*)f1)->getData();
+		s2 = ((DataCarrier<std::string>*)f2)->getData();
+		if(op == MENOR) return s1.compare(s2) < 0;
+		if(op == MAYOR) return s1.compare(s2) > 0;
+		if(op == IGUAL) return s1.compare(s2) == 0;
+		if(op == DIFERENTE) return s1.compare(s2) != 0;
+		return false;
+	}
+	return false;
+}
+string DBSystem::DELETE(TableSpace * tbs, Table* t,const where& w) 
+{
+	std::fstream ifs;
+	long tbid, tid, colid;
+	long nxt;
+	ifs.open(tbs->GetPath().c_str());
+	if(ifs.is_open()) {
+		streampos end, begReg, lstReg;
+		ifs.seekg (0, ios::end);
+		end = ifs.tellg();
+		ifs.seekg (0);
+
+		while(ifs.tellg() != end) {
+			begReg = ifs.tellg();
+			nxt = SerializadorBinario::deserializeLong(ifs);
+			tbid = SerializadorBinario::deserializeLong(ifs);
+			tid = SerializadorBinario::deserializeLong(ifs);
+			colid = SerializadorBinario::deserializeLong(ifs);
+			if((ifs.tellg()+(nxt-24)) == end && tid != t->GetID()) break;
+			if(tid == t->GetID()) {
+				std::vector<Any*> v(t->GetTamano());
+				for(unsigned long i = 0; i < t->GetTamano(); i++) {
+					char isNull = SerializadorBinario::deserializeChar(ifs);
+					switch((*t)[i]->GetTipo()) {
+					case BYTE:
+						v[i] = new DataCarrier<char>(SerializadorBinario::deserializeChar(ifs),isNull,BYTE);
+						break;
+					case INTEGER:
+						v[i] = new DataCarrier<int>(SerializadorBinario::deserializeInt(ifs),isNull,INTEGER);
+						break;
+					case LONG:
+						v[i] = new DataCarrier<long>(SerializadorBinario::deserializeLong(ifs),isNull,LONG);
+						break;
+					case DOUBLE:
+						v[i] = new DataCarrier<double>(SerializadorBinario::deserializeDouble(ifs),isNull,DOUBLE);
+						break;
+					case STRING:
+						v[i] = new DataCarrier<std::string>(SerializadorBinario::deserializeFixedString(ifs),isNull,STRING);
+						break;
+					}
+					if( (i + 1) < t->GetTamano()) {
+						nxt = SerializadorBinario::deserializeLong(ifs);
+						tbid = SerializadorBinario::deserializeLong(ifs);
+						tid = SerializadorBinario::deserializeLong(ifs);
+						colid = SerializadorBinario::deserializeLong(ifs);
+					}
+				}
+				lstReg = ifs.tellg();
+				if(w.aplicar) {
+					Any* a = v[w.field_a];
+					if(w.tipo == 0) {
+						Any* b = v[w.field_b];
+						if(WHERE(a, b, w.operation)) delReg(t->GetTamano(),ifs, begReg);
+					} else {
+						Any* b = w.val_a;
+						if(WHERE(a,b,w.operation)) delReg(t->GetTamano(),ifs, begReg);
+					}
+				} else delReg(t->GetTamano(),ifs, begReg);
+				ifs.seekg(lstReg);
+
+			} else ifs.seekg((std::streampos)(nxt-24), ios::cur);
+		}
+	} else return "No rows Affected";
+	return "many rows Affected";
+}

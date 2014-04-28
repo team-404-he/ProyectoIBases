@@ -15,6 +15,7 @@ public:
 	dataSet(int , int);
 	dataSet(std::list< std::vector<Any*> >&);
 	std::vector<Any*>& operator[](int);
+	std::string toString() const;
 	~dataSet();
 
 };
