@@ -15,6 +15,7 @@ TableSpace::TableSpace(id _id, string _nombre, std::string _path): path(_path), 
 		this->nombre = _nombre;
 }
 void TableSpace::addTable(Table * t){
+	t->SetID(this->tablas.size());
 	this->tablas.push_back(t);
 }
 void TableSpace::removeTable(id _id){

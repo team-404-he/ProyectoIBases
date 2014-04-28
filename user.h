@@ -29,7 +29,7 @@ private:
 	id u_id; 					//EL id del Usuario
 	id tb_id; 					//El TableSpace Designado
 	std::string nombre; 		//Nombre Del Usuario
-	std::string pass; 	//TOTALLY SECURITY FAULT
+	std::string pass; 		//TOTAL SECURITY FAULT
 	privilegios privilegio;  //EL NIVEL DE PRIVILEGIOS QUE TIENE EL USUARIO
 
 };

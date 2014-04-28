@@ -6,6 +6,7 @@
 #include "db_system.h"
 #include "data_set.h"
 #include "sesion_actual.h"
+#include "definitions.h"
 #include <map>
 #include <vector>
 #include <iostream>

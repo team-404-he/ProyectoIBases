@@ -11,6 +11,7 @@
 #include "any.h"
 #include "data_set.h"
 #include "sesion_actual.h"
+#include "operaciones.h"
 
 using namespace std;
 int main(int argc, char ** argv){
@@ -18,6 +19,10 @@ int main(int argc, char ** argv){
 	dic->deserialize();
 	
 	SesionActual * sesion = SesionActual::Instance();
+	sesion->SetTbActual(dic->getTBSByID(0));
+	sesion->SetUserActual(dic->getUserByID(0));
+	Operaciones op;
+	op.menuPrincipal();
 	
 	/*TableSpace * tb = new TableSpace(0,"TB0","TB0.dbf");
 	Table* t = new Table(0,"Tabla0",0,0);
@@ -29,7 +34,7 @@ int main(int argc, char ** argv){
 	tb->addTable(t2);
 	dic->addTableSpace(tb);*/
 	/*dic->serialize();*/
-	vector<Any*> v (1);
+	/*vector<Any*> v (1);
 	v[0] = new DataCarrier<std::string>("JOHAN",0,STRING);
 	
 	vector<int> v1(2);
@@ -48,7 +53,7 @@ int main(int argc, char ** argv){
 		delete v[1];
 	}
 	//DBSystem::INSERT(tbs,tb,v,v1);*/
-	where x;
+	/*where x;
 	x.aplicar = false;
 	where w;
 	w.aplicar = true;
@@ -66,10 +71,10 @@ int main(int argc, char ** argv){
 	DBSystem::UPDATE(tbs,tb,v,f,w);
 	dts = DBSystem::SELECT(tbs, tb,v1, x);
 	cout<<dts->toString();
-	
+	delete w.val_a;*
 	delete dts; 
-	
+	*/
 	dic->serialize();
-	delete w.val_a;
+	
 	//cin.get();*/
 }

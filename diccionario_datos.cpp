@@ -118,5 +118,6 @@ user * DiccionarioDatos::getUserByName(std::string _nombre){
 }
 
 void DiccionarioDatos::addUser(user* u){
+	u->SetID(this->users.size());
 	this->users.push_back(u);
 }
